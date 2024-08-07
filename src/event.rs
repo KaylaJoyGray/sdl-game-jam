@@ -1,6 +1,8 @@
-use crate::damage::DamageKind;
 use crate::enemy::EnemyQueue;
 use crate::player::Player;
+
+#[derive(Copy, Clone)]
+pub enum DamageKind {}
 
 pub enum Event {
     DamagePlayer(DamageKind),

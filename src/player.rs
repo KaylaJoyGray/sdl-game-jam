@@ -1,4 +1,4 @@
-use crate::damage::DamageKind;
+use crate::event::DamageKind;
 
 pub struct Player {
 

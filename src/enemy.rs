@@ -1,6 +1,6 @@
 use crate::event::{Event, EventQueue};
 use sdl2::rect::Rect;
-use crate::damage::DamageKind;
+use crate::event::DamageKind;
 
 struct Enemy {
     id: u32,

@@ -1,8 +1,6 @@
-use sdl2::rect::Rect;
 use crate::event::{Event, EventQueue};
-
-#[derive(Copy, Clone)]
-pub enum DamageKind {}
+use sdl2::rect::Rect;
+use crate::damage::DamageKind;
 
 struct Enemy {
     id: u32,
@@ -40,17 +38,15 @@ impl EnemyQueue {
         self.enemies.push(Enemy::new(self.next_id, x, y, kind));
     }
 
-    pub fn move_towards_player(&self) {
+    pub fn move_towards_player(&self, player_x: i32, player_y: i32, delta: f32) {
         todo!()
     }
 
     pub fn check_collisions(&mut self, player_rect: Rect, event_queue: &mut EventQueue) {
         self.enemies.iter().for_each(|e| {
             if e.rect.has_intersection(player_rect) {
-                // send "damage player" event
-                event_queue.send(Event::DamagePlayer(e.kind));
-                // send "death" event
-                event_queue.send(Event::KillEnemy(e.id));
+                event_queue.send(Event::DamagePlayer(e.kind)); // send "damage player" event
+                event_queue.send(Event::KillEnemy(e.id)); // send "death" event
             }
         });
     }

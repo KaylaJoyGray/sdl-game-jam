@@ -1,4 +1,5 @@
-use crate::enemy::{DamageKind, EnemyQueue};
+use crate::damage::DamageKind;
+use crate::enemy::EnemyQueue;
 use crate::player::Player;
 
 pub enum Event {

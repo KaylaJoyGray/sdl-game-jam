@@ -6,6 +6,7 @@ mod ship;
 mod enemy;
 mod event;
 mod player;
+mod damage;
 
 fn main() {
     let sdl_context = sdl2::init().unwrap(); // SDL context

@@ -2,7 +2,6 @@
 
  */
 
-mod ship;
 mod enemy;
 mod event;
 mod player;

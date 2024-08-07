@@ -18,6 +18,8 @@ fn main() {
 
     let mut canvas = window.into_canvas().build().unwrap(); // canvas wrapper
     let mut event_pump = sdl_context.event_pump().unwrap(); // event wrapper
+    
+    let enemy_queue = enemy::EnemyQueue::new();
 
     canvas.clear();
     canvas.present();

@@ -6,6 +6,7 @@ use sdl2::sys::SDL_GetTicks64;
 mod enemy;
 mod event;
 mod player;
+mod background;
 
 fn main() {
     let sdl_context = sdl2::init().unwrap(); // SDL context

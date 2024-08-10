@@ -39,7 +39,7 @@ impl EnemyQueue {
     }
 
     pub fn move_towards_player(&self, player_x: i32, player_y: i32, delta: f32) {
-        todo!()
+        for e in en
     }
 
     pub fn check_collisions(&mut self, player_rect: Rect, event_queue: &mut EventQueue) {

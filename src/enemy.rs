@@ -7,15 +7,17 @@ struct Enemy {
     pub alive: bool,
     pub kind: DamageKind,
     pub rect: Rect,
+    pub speed: i32, // units per ms
 }
 
 impl Enemy {
-    fn new(id: u32, x: i32, y: i32, kind: DamageKind) -> Self {
+    fn new(id: u32, x: i32, y: i32, kind: DamageKind, speed: i32) -> Self {
         Self {
             id,
             alive: true,
             kind,
             rect: Rect::new(x, y, 10, 10),
+            speed,
         }
     }
 }
@@ -33,14 +35,24 @@ impl EnemyQueue {
         }
     }
 
-    pub fn add_enemy(&mut self, x: i32, y: i32, kind: DamageKind) {
+    pub fn add_enemy(&mut self, x: i32, y: i32, kind: DamageKind, speed: i32) {
         self.next_id += 1;
-        self.enemies.push(Enemy::new(self.next_id, x, y, kind));
+        self.enemies.push(Enemy::new(self.next_id, x, y, kind, speed));
     }
 
-    pub fn move_towards_player(&self, player_x: i32, player_y: i32, delta: f32) {
-        //for e in en
-        todo!()
+    pub fn move_towards_player(&mut self, player_x: i32, player_y: i32, delta: u64) {
+        for e in &mut self.enemies {
+            let dist_x = player_x - e.rect.x;
+            let dist_y = player_y - e.rect.y;
+            let total_dist = ((dist_x.pow(2) + dist_y.pow(2)) as f64).sqrt();
+
+            // Normalize distances and scale by enemy speed and delta time
+            let move_x = (dist_x as f64 / total_dist * e.speed as f64 * delta as f64) as i32;
+            let move_y = (dist_y as f64 / total_dist * e.speed as f64 * delta as f64) as i32;
+
+            e.rect.x += move_x;
+            e.rect.y += move_y;
+        }
     }
 
     pub fn check_collisions(&mut self, player_rect: Rect, event_queue: &mut EventQueue) {

@@ -47,18 +47,18 @@ impl<'a> Background<'a> {
     pub fn blit(
         &mut self,
         canvas: &mut WindowCanvas,
-        screen_width: u32,
-        screen_height: u32,
+        screen_width: i32,
+        screen_height: i32,
         delta: f32,
     ) {
         // update index
         let add = (delta % self.speed) as usize;
         self.index = (self.index + add) % self.textures.len();
 
-        let mut y: i32 = (0 - (screen_height / 2)) as i32;
-        let mut x: i32 = (0 - (screen_width / 2)) as i32;
-        while y < (screen_height / 2) as i32 {
-            while x < (screen_width / 2) as i32 {
+        let mut y: i32 = 0 - (screen_height / 2);
+        let mut x: i32 = 0 - (screen_width / 2);
+        while y < (screen_height / 2) {
+            while x < (screen_width / 2) {
                 canvas
                     .copy(
                         &self.textures[self.index],
@@ -69,7 +69,7 @@ impl<'a> Background<'a> {
                 x += 128; // tile size
             }
             y += 128;
-            x = (0 - (screen_width / 2)) as i32;
+            x = 0 - (screen_width / 2);
         }
     }
 }

@@ -55,21 +55,21 @@ impl<'a> Background<'a> {
         let add = (delta % self.speed) as usize;
         self.index = (self.index + add) % self.textures.len();
 
-        let mut y: i32 = 0 - (screen_height / 2);
-        let mut x: i32 = 0 - (screen_width / 2);
-        while y < (screen_height / 2) {
-            while x < (screen_width / 2) {
+        let mut y: i32 = 0;
+        let mut x: i32 = 0;
+        while y < (screen_height) {
+            while x < (screen_width) {
                 canvas
                     .copy(
                         &self.textures[self.index],
                         None,
-                        Rect::new(x, y, 1920, 1080),
+                        Rect::new(x, y, 128, 128),
                     )
                     .expect("Error: could not draw background");
                 x += 128; // tile size
             }
             y += 128;
-            x = 0 - (screen_width / 2);
+            x = 0;
         }
     }
 }

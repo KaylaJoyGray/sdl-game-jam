@@ -22,7 +22,7 @@ fn main() {
         .unwrap();
 
     let mut canvas = window.into_canvas().build().unwrap(); // canvas wrapper
-    let mut texture_creator = canvas.texture_creator(); // texture creator tied to canvas lifetime
+    let texture_creator = canvas.texture_creator(); // texture creator tied to canvas lifetime
     let mut event_pump = sdl_context.event_pump().unwrap(); // event wrapper
 
     let mut player = player::Player::new(0, 0, 10, 100);

@@ -51,7 +51,7 @@ fn main() {
         canvas.clear();
 
         // rendering
-        background.blit(&mut canvas, 1920, 1080, delta);
+        background.render(&mut canvas, 1920, 1080, delta);
 
         canvas.present();
     }

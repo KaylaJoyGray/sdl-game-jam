@@ -41,8 +41,8 @@ impl<'a> Background<'a> {
             textures,
         }
     }
-    
-    pub fn blit(
+
+    pub fn render(
         &mut self,
         canvas: &mut WindowCanvas,
         screen_width: i32,

@@ -32,12 +32,13 @@ fn main() {
     let mut event_queue = event::EventQueue::new();
 
     let mut last = timer_subsystem.ticks64();
-    loop {
+
+    'main_loop: loop {
         let delta = (timer_subsystem.ticks64() - last) as f32 / 1000.0;
 
         for event in event_pump.poll_iter() {
             match event {
-                sdl2::event::Event::Quit { .. } => break,
+                sdl2::event::Event::Quit { .. } => break 'main_loop,
                 _ => {}
             }
         }

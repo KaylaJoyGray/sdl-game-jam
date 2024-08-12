@@ -10,7 +10,7 @@ pub enum Event {
 }
 
 impl Event {
-    fn handle(self, player: &mut Player, enemy_queue: &mut EnemyQueue) {
+    fn handle(&self, player: &mut Player, enemy_queue: &mut EnemyQueue) {
         match self {
             Event::DamagePlayer(kind) => player.apply_damage(kind),
             Event::KillEnemy(id) => enemy_queue.kill(id),
@@ -31,8 +31,8 @@ impl EventQueue {
         self.events.push(event);
     }
 
-    pub fn handle_events(mut self, player: &mut Player, enemy_queue: &mut EnemyQueue) {
-        for e in self.events {
+    pub fn handle_events(&mut self, player: &mut Player, enemy_queue: &mut EnemyQueue) {
+        for e in &mut self.events {
             e.handle(player, enemy_queue);
         }
     }

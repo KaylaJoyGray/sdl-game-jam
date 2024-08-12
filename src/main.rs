@@ -48,6 +48,9 @@ fn main() {
         enemy_queue.move_towards_player(player.rect.x, player.rect.y, delta);
         enemy_queue.check_collisions(player.rect, &mut event_queue);
 
+        // handle events
+        event_queue.handle_events(&mut player, &mut enemy_queue);
+
         canvas.clear();
 
         // rendering

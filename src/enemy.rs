@@ -1,6 +1,8 @@
-use crate::event::DamageKind;
-use crate::event::{Event, EventQueue};
 use sdl2::rect::Rect;
+use sdl2::render::WindowCanvas;
+
+use crate::event::{Event, EventQueue};
+use crate::event::DamageKind;
 
 struct Enemy {
     id: u32,
@@ -37,7 +39,8 @@ impl EnemyQueue {
 
     pub fn add_enemy(&mut self, x: i32, y: i32, kind: DamageKind, speed: i32) {
         self.next_id += 1;
-        self.enemies.push(Enemy::new(self.next_id, x, y, kind, speed));
+        self.enemies
+            .push(Enemy::new(self.next_id, x, y, kind, speed));
     }
 
     pub fn move_towards_player(&mut self, player_x: i32, player_y: i32, delta: u64) {
@@ -66,5 +69,9 @@ impl EnemyQueue {
 
     pub fn kill(&mut self, id: u32) {
         self.enemies.retain(|e| e.id != id);
+    }
+
+    pub fn render(&mut self, canvas: &mut WindowCanvas, delta: u64) {
+        
     }
 }

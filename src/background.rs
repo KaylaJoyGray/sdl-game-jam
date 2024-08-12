@@ -6,7 +6,6 @@
 use sdl2::image::LoadTexture;
 use sdl2::rect::Rect;
 use sdl2::render::{Texture, TextureCreator, WindowCanvas};
-use sdl2::surface::SurfaceRef;
 use sdl2::video::WindowContext;
 
 pub struct Background<'a> {

@@ -34,7 +34,9 @@ fn main() {
     let mut last = timer_subsystem.ticks64();
 
     'main_loop: loop {
-        let delta = (timer_subsystem.ticks64() - last) as f32 / 1000.0;
+        // update delta time
+        let delta = timer_subsystem.ticks64() - last;
+        last = timer_subsystem.ticks64();
 
         for event in event_pump.poll_iter() {
             match event {
@@ -52,8 +54,5 @@ fn main() {
         background.blit(&mut canvas, 1920, 1080, delta);
 
         canvas.present();
-
-        // update delta time
-        last = timer_subsystem.ticks64();
     }
 }

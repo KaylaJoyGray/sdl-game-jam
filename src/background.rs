@@ -9,7 +9,8 @@ use sdl2::render::{Texture, TextureCreator, WindowCanvas};
 use sdl2::video::WindowContext;
 
 pub struct Background<'a> {
-    pub speed: f32,
+    animation_speed: u64,
+    delta: u64,
     index: usize,
     textures: Vec<Texture<'a>>,
 }
@@ -34,26 +35,27 @@ impl<'a> Background<'a> {
         }
 
         Self {
-            speed: 0.1,
+            animation_speed: 100,   // ms
+            delta: 0,
             index: 0,
             textures,
         }
     }
-
-    pub fn update() {
-        todo!()
-    }
-
+    
     pub fn blit(
         &mut self,
         canvas: &mut WindowCanvas,
         screen_width: i32,
         screen_height: i32,
-        delta: f32,
+        delta: u64,
     ) {
         // update index
-        let add = (delta % self.speed) as usize;
-        self.index = (self.index + add) % self.textures.len();
+        self.delta += delta;
+
+        if self.delta > self.animation_speed {
+            self.index = (self.index + 1) % self.textures.len();
+            self.delta = 0;
+        }
 
         let mut y: i32 = 0;
         let mut x: i32 = 0;

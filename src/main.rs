@@ -27,7 +27,7 @@ fn main() {
     let mut player = player::Player::new(0, 0, 10, 100);
     let mut background = background::Background::new(&texture_creator);
 
-    let mut enemy_queue = enemy::EnemyQueue::new();
+    let mut enemy_queue = enemy::EnemyQueue::new(&texture_creator);
     let mut event_queue = event::EventQueue::new();
 
     let mut last = timer_subsystem.ticks64();

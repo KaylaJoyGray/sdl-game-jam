@@ -67,8 +67,8 @@ impl EnemyQueue {
         });
     }
 
-    pub fn kill(&mut self, id: u32) {
-        self.enemies.retain(|e| e.id != id);
+    pub fn kill(&mut self, id: &u32) {
+        self.enemies.retain(|e| e.id != *id);
     }
 
     pub fn render(&mut self, canvas: &mut WindowCanvas, delta: u64) {

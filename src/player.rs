@@ -12,7 +12,7 @@ impl Player {
         }
     }
 
-    pub fn apply_damage(&mut self, kind: DamageKind) {
+    pub fn apply_damage(&mut self, kind: &DamageKind) {
         todo!()
     }
 }

@@ -45,6 +45,7 @@ fn main() {
             }
         }
 
+        // game logic here
         enemy_queue.move_towards_player(player.rect.x, player.rect.y, delta);
         enemy_queue.check_collisions(player.rect, &mut event_queue);
 
@@ -53,7 +54,7 @@ fn main() {
 
         canvas.clear();
 
-        // rendering
+        // rendering here
         background.render(&mut canvas, 1920, 1080, delta);
 
         canvas.present();

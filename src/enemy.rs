@@ -8,12 +8,19 @@ use sdl2::video::WindowContext;
 use crate::event::{Event, EventQueue};
 use crate::event::DamageKind;
 
+enum EnemyState {
+    Idle,
+    Attack,
+    Dying,
+}
+
 struct Enemy {
     id: u32,
     pub kind: DamageKind,
     pub rect: Rect,
     pub speed: i32,         // units per ms
     pub sprite_pfx: String, // sprite prefix, i.e. "ghost" for "ghostidle0, ghostdeath0, etc."
+    pub state: EnemyState,
 }
 
 impl Enemy {
@@ -24,6 +31,7 @@ impl Enemy {
             rect: Rect::new(x, y, 10, 10),
             speed,
             sprite_pfx: "ghost".to_string(),
+            state: EnemyState::Idle,
         }
     }
 }
@@ -87,7 +95,19 @@ impl<'a> EnemyQueue<'a> {
 
     pub fn render(&self, canvas: &mut WindowCanvas) {
         for e in &self.enemies {
-            let texture = self.textures.get(&e.sprite_pfx);
+            let mut sprite_str = e.sprite_pfx.clone();
+            match e.state {
+                EnemyState::Idle => {
+                    sprite_str.push_str("idle");
+                }
+                EnemyState::Attack => {
+                    sprite_str.push_str("attack");
+                }
+                EnemyState::Dying => {
+                    sprite_str.push_str("death");
+                }
+            }
+            let texture = self.textures.get(&sprite_str);
             if let Some(texture) = texture {
                 canvas
                     .copy(

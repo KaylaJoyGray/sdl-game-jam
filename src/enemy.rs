@@ -47,11 +47,11 @@ impl EnemyQueue {
         for e in &mut self.enemies {
             let dist_x = player_x - e.rect.x;
             let dist_y = player_y - e.rect.y;
-            let total_dist = ((dist_x.pow(2) + dist_y.pow(2)) as f64).sqrt();
+            let total_dist = ((dist_x.pow(2) + dist_y.pow(2)) as f32).sqrt();
 
             // Normalize distances and scale by enemy speed and delta time
-            let move_x = (dist_x as f64 / total_dist * e.speed as f64 * delta as f64) as i32;
-            let move_y = (dist_y as f64 / total_dist * e.speed as f64 * delta as f64) as i32;
+            let move_x = (dist_x as f32 / total_dist * e.speed as f32 * delta as f32) as i32;
+            let move_y = (dist_y as f32 / total_dist * e.speed as f32 * delta as f32) as i32;
 
             e.rect.x += move_x;
             e.rect.y += move_y;

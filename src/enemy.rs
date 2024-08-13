@@ -21,6 +21,7 @@ struct Enemy {
     pub speed: i32,         // units per ms
     pub sprite_pfx: String, // sprite prefix, i.e. "ghost" for "ghostidle0, ghostdeath0, etc."
     pub state: EnemyState,
+    pub index: usize,       // animation index
 }
 
 impl Enemy {
@@ -32,6 +33,7 @@ impl Enemy {
             speed,
             sprite_pfx: "ghost".to_string(),
             state: EnemyState::Idle,
+            index: 0,
         }
     }
 }

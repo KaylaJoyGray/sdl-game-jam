@@ -1,7 +1,6 @@
 /*
 
 */
-use sdl2::sys::SDL_GetTicks64;
 
 mod background;
 mod enemy;

@@ -119,7 +119,7 @@ impl<'a> EnemyQueue<'a> {
                     )
                     .expect("Error: could not draw enemy");
             } else {
-                eprintln!("Warning: could not find a texture named {}", e.sprite_pfx);
+                eprintln!("Warning: could not find a texture named {}", sprite_str);
             }
         }
     }

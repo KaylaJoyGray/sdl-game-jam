@@ -6,7 +6,6 @@ use crate::event::DamageKind;
 
 struct Enemy {
     id: u32,
-    pub alive: bool,
     pub kind: DamageKind,
     pub rect: Rect,
     pub speed: i32, // units per ms
@@ -16,7 +15,6 @@ impl Enemy {
     fn new(id: u32, x: i32, y: i32, kind: DamageKind, speed: i32) -> Self {
         Self {
             id,
-            alive: true,
             kind,
             rect: Rect::new(x, y, 10, 10),
             speed,
@@ -71,7 +69,7 @@ impl EnemyQueue {
         self.enemies.retain(|e| e.id != *id);
     }
 
-    pub fn render(&mut self, canvas: &mut WindowCanvas, delta: u64) {
+    pub fn render(&mut self, canvas: &mut WindowCanvas) {
         
     }
 }

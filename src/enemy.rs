@@ -23,6 +23,7 @@ impl Enemy {
             kind,
             rect: Rect::new(x, y, 10, 10),
             speed,
+            sprite_pfx: "ghost".to_string(),
         }
     }
 }

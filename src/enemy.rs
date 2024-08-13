@@ -1,5 +1,9 @@
+use std::collections::HashMap;
+
+use sdl2::image::LoadTexture;
 use sdl2::rect::Rect;
-use sdl2::render::WindowCanvas;
+use sdl2::render::{Texture, TextureCreator, WindowCanvas};
+use sdl2::video::WindowContext;
 
 use crate::event::{Event, EventQueue};
 use crate::event::DamageKind;
@@ -8,7 +12,8 @@ struct Enemy {
     id: u32,
     pub kind: DamageKind,
     pub rect: Rect,
-    pub speed: i32, // units per ms
+    pub speed: i32,         // units per ms
+    pub sprite_pfx: String, // sprite prefix, i.e. "ghost" for "ghostidle0, ghostdeath0, etc."
 }
 
 impl Enemy {
@@ -22,16 +27,26 @@ impl Enemy {
     }
 }
 
-pub struct EnemyQueue {
+pub struct EnemyQueue<'a> {
     next_id: u32,
     enemies: Vec<Enemy>,
+    textures: HashMap<String, Texture<'a>>,
 }
 
-impl EnemyQueue {
-    pub fn new() -> Self {
+impl<'a> EnemyQueue<'a> {
+    pub fn new(texture_creator: &'a TextureCreator<WindowContext>) -> Self {
+        let mut textures = HashMap::<String, Texture<'a>>::new();
+        textures.insert(
+            "ghostidle0".to_string(),
+            texture_creator
+                .load_texture("assets/enemies/ghostidle/sprite_0.png")
+                .expect("Could not load ghostidle/sprite_0.png"),
+        );
+
         Self {
             next_id: 0,
             enemies: Vec::new(),
+            textures,
         }
     }
 
@@ -69,7 +84,18 @@ impl EnemyQueue {
         self.enemies.retain(|e| e.id != *id);
     }
 
-    pub fn render(&mut self, canvas: &mut WindowCanvas) {
-        
+    pub fn render(&self, canvas: &mut WindowCanvas) {
+        for e in &self.enemies {
+            let texture = self.textures.get(&e.sprite_pfx);
+            if let Some(texture) = texture {
+                canvas
+                    .copy(
+                        texture,
+                        Rect::new(0, 0, 50, 50),
+                        Rect::new(e.rect.x, e.rect.y, 50, 50),
+                    )
+                    .expect("Error: could not draw enemy");
+            }
+        }
     }
 }

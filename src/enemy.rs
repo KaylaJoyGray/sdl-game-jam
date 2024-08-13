@@ -95,6 +95,8 @@ impl<'a> EnemyQueue<'a> {
                         Rect::new(e.rect.x, e.rect.y, 50, 50),
                     )
                     .expect("Error: could not draw enemy");
+            } else {
+                eprintln!("Warning: could not find a texture named {}", e.sprite_pfx);
             }
         }
     }

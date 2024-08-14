@@ -79,6 +79,8 @@ impl<'a> EnemyQueue<'a> {
 
             e.rect.x += move_x;
             e.rect.y += move_y;
+
+            println!("Enemy {} is now at {}, {}", e.id, e.rect.x, e.rect.y);
         }
     }
 
@@ -109,13 +111,14 @@ impl<'a> EnemyQueue<'a> {
                     sprite_str.push_str("death");
                 }
             }
+            sprite_str.push_str(&e.index.to_string());
             let texture = self.textures.get(&sprite_str);
             if let Some(texture) = texture {
                 canvas
                     .copy(
                         texture,
                         Rect::new(0, 0, 50, 50),
-                        Rect::new(e.rect.x, e.rect.y, 50, 50),
+                        Rect::new(e.rect.x, e.rect.y, 10, 10),
                     )
                     .expect("Error: could not draw enemy");
             } else {

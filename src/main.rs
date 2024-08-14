@@ -1,6 +1,7 @@
 /*
 
 */
+use crate::event::DamageKind;
 
 mod background;
 mod enemy;
@@ -24,13 +25,16 @@ fn main() {
     let texture_creator = canvas.texture_creator(); // texture creator tied to canvas lifetime
     let mut event_pump = sdl_context.event_pump().unwrap(); // event wrapper
 
-    let mut player = player::Player::new(0, 0, 10, 100);
+    let mut player = player::Player::new(1920, 1080, 10, 10);
     let mut background = background::Background::new(&texture_creator);
 
     let mut enemy_queue = enemy::EnemyQueue::new(&texture_creator);
     let mut event_queue = event::EventQueue::new();
 
     let mut last = timer_subsystem.ticks64();
+
+    // spawn a test enemy
+    enemy_queue.add_enemy(0, 0, DamageKind::Normal, 1);
 
     'main_loop: loop {
         // update delta time
@@ -55,6 +59,7 @@ fn main() {
 
         // rendering here
         background.render(&mut canvas, 1920, 1080, delta);
+        enemy_queue.render(&mut canvas);
 
         canvas.present();
     }

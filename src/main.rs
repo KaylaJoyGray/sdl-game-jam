@@ -1,6 +1,8 @@
 /*
 
 */
+use sdl2::gfx::framerate::FPSManager;
+
 use crate::event::DamageKind;
 
 mod background;
@@ -25,6 +27,9 @@ fn main() {
     let texture_creator = canvas.texture_creator(); // texture creator tied to canvas lifetime
     let mut event_pump = sdl_context.event_pump().unwrap(); // event wrapper
 
+    let mut fps_manager = FPSManager::new();
+    fps_manager.set_framerate(30).expect("Failed to set framerate");
+
     let mut player = player::Player::new(1920, 1080, 10, 10);
     let mut background = background::Background::new(&texture_creator);
 
@@ -37,6 +42,8 @@ fn main() {
     enemy_queue.add_enemy(0, 0, DamageKind::Normal, 1.);
 
     'main_loop: loop {
+        fps_manager.delay();
+
         // update delta time
         let now = timer_subsystem.ticks64();
         let delta = now - last;

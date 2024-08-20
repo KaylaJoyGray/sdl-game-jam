@@ -3,7 +3,7 @@ use crate::player::Player;
 
 #[derive(Copy, Clone)]
 pub enum DamageKind {
-    Normal,
+    Normal(u32),    // health to take
 }
 
 pub enum Event {

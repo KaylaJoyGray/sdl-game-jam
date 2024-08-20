@@ -57,7 +57,7 @@ fn main() {
         }
 
         // game logic here
-        enemy_queue.move_towards_player(player.rect.x, player.rect.y, delta);
+        enemy_queue.move_towards_player(player.rect, delta);
         enemy_queue.check_collisions(player.rect, &mut event_queue);
 
         // handle events

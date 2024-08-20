@@ -69,8 +69,12 @@ impl<'a> EnemyQueue<'a> {
             .push(Enemy::new(self.next_id, x, y, kind, speed));
     }
 
-    pub fn move_towards_player(&mut self, player_x: i32, player_y: i32, delta: u64) {
+    pub fn move_towards_player(&mut self, player_rect: Rect, delta: u64) {
         let delta = delta as f32 / 1000.;
+
+        // find the center of player rect
+        let player_x = player_rect.x as u32 + (player_rect.width() / 2);
+        let player_y = player_rect.y as u32 + (player_rect.height() / 2);
 
         for e in &mut self.enemies {
             // calculate movement vector

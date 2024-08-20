@@ -99,7 +99,7 @@ impl<'a> EnemyQueue<'a> {
             e.rect.y = e.loc.1 as i32;
 
             //println!("Enemy {} is now at {}, {}", e.id, e.rect.x, e.rect.y);
-            println!("Delta: {}", delta);
+            //println!("Delta: {}", delta);
         }
     }
 

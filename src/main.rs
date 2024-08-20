@@ -3,7 +3,7 @@
 */
 use sdl2::gfx::framerate::FPSManager;
 
-use crate::event::DamageKind;
+//use crate::event::DamageKind;
 
 mod background;
 mod enemy;
@@ -30,7 +30,7 @@ fn main() {
     let mut fps_manager = FPSManager::new();
     fps_manager.set_framerate(30).expect("Failed to set framerate");
 
-    let mut player = player::Player::new(1920, 1080, 10, 10);
+    let mut player = player::Player::new(1920/2, 1080/2, 10, 10);
     let mut background = background::Background::new(&texture_creator);
 
     let mut enemy_queue = enemy::EnemyQueue::new(&texture_creator);
@@ -39,7 +39,7 @@ fn main() {
     let mut last = timer_subsystem.ticks64();
 
     // spawn a test enemy
-    enemy_queue.add_enemy(0, 0, DamageKind::Normal, 1.);
+    // enemy_queue.add_enemy(0, 0, DamageKind::Normal, 1.);
 
     'main_loop: loop {
         fps_manager.delay();

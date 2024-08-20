@@ -34,12 +34,13 @@ fn main() {
     let mut last = timer_subsystem.ticks64();
 
     // spawn a test enemy
-    enemy_queue.add_enemy(0, 0, DamageKind::Normal, 1);
+    enemy_queue.add_enemy(0, 0, DamageKind::Normal, 1.);
 
     'main_loop: loop {
         // update delta time
-        let delta = timer_subsystem.ticks64() - last;
-        last = timer_subsystem.ticks64();
+        let now = timer_subsystem.ticks64();
+        let delta = now - last;
+        last = now;
 
         for event in event_pump.poll_iter() {
             match event {

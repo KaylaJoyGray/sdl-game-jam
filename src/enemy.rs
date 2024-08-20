@@ -17,18 +17,20 @@ enum EnemyState {
 struct Enemy {
     id: u32,
     pub kind: DamageKind,
+    pub loc: (f32, f32),    // floating point location, used for calculations
     pub rect: Rect,
-    pub speed: i32,         // units per ms
+    pub speed: f32,         // units per ms
     pub sprite_pfx: String, // sprite prefix, i.e. "ghost" for "ghostidle0, ghostdeath0, etc."
     pub state: EnemyState,
     pub index: usize,       // animation index
 }
 
 impl Enemy {
-    fn new(id: u32, x: i32, y: i32, kind: DamageKind, speed: i32) -> Self {
+    fn new(id: u32, x: i32, y: i32, kind: DamageKind, speed: f32) -> Self {
         Self {
             id,
             kind,
+            loc: (x as f32, y as f32),
             rect: Rect::new(x, y, 10, 10),
             speed,
             sprite_pfx: "ghost".to_string(),
@@ -61,26 +63,39 @@ impl<'a> EnemyQueue<'a> {
         }
     }
 
-    pub fn add_enemy(&mut self, x: i32, y: i32, kind: DamageKind, speed: i32) {
+    pub fn add_enemy(&mut self, x: i32, y: i32, kind: DamageKind, speed: f32) {
         self.next_id += 1;
         self.enemies
             .push(Enemy::new(self.next_id, x, y, kind, speed));
     }
 
     pub fn move_towards_player(&mut self, player_x: i32, player_y: i32, delta: u64) {
+        let delta = delta as f32 / 1000.;
+
         for e in &mut self.enemies {
-            let dist_x = player_x - e.rect.x;
-            let dist_y = player_y - e.rect.y;
-            let total_dist = ((dist_x.pow(2) + dist_y.pow(2)) as f32).sqrt();
+            // calculate movement vector
+            let (vx, vy) = (e.loc.0, e.loc.1);
+            let (ux, uy) = (player_x as f32, player_y as f32);
 
-            // Normalize distances and scale by enemy speed and delta time
-            let move_x = (dist_x as f32 / total_dist * e.speed as f32 * delta as f32) as i32;
-            let move_y = (dist_y as f32 / total_dist * e.speed as f32 * delta as f32) as i32;
+            let (mut vecx, mut vecy) = (ux - vx, uy - vy);
 
-            e.rect.x += move_x;
-            e.rect.y += move_y;
+            // normalize the vector
+            let magnitude = (vecx.powi(2) + vecy.powi(2)).sqrt();
+            (vecx, vecy) = (vecx / magnitude, vecy / magnitude);
 
-            println!("Enemy {} is now at {}, {}", e.id, e.rect.x, e.rect.y);
+            if delta != 0. {
+                (vecx, vecy) = (vecx * (e.speed / delta), vecy * (e.speed / delta));
+            }
+
+            // update location
+            e.loc = (e.loc.0 + vecx, e.loc.1 + vecy);
+
+            // update SDL rect
+            e.rect.x = e.loc.0 as i32;
+            e.rect.y = e.loc.1 as i32;
+
+            //println!("Enemy {} is now at {}, {}", e.id, e.rect.x, e.rect.y);
+            println!("Delta: {}", delta);
         }
     }
 

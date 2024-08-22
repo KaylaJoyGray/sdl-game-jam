@@ -1,6 +1,6 @@
 use sdl2::rect::Rect;
 
-use crate::event::DamageKind;
+use crate::event::{damage_health, DamageKind};
 
 pub struct Player {
     health: i32,
@@ -16,10 +16,6 @@ impl Player {
     }
 
     pub fn apply_damage(&mut self, kind: DamageKind) {
-        match kind {
-            DamageKind::Normal(amount) => {
-                self.health -= amount as i32;
-            }
-        }
+        damage_health(&mut self.health, kind);
     }
 }

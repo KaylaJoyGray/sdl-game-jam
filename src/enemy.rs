@@ -5,7 +5,7 @@ use sdl2::rect::Rect;
 use sdl2::render::{Texture, TextureCreator, WindowCanvas};
 use sdl2::video::WindowContext;
 
-use crate::event::{Event, EventQueue};
+use crate::event::{damage_health, Event, EventQueue};
 use crate::event::DamageKind;
 
 enum EnemyState {
@@ -16,6 +16,7 @@ enum EnemyState {
 
 struct Enemy {
     id: u32,
+    health: i32,
     pub kind: DamageKind,
     pub loc: (f32, f32),    // floating point location, used for calculations
     pub rect: Rect,
@@ -26,10 +27,11 @@ struct Enemy {
 }
 
 impl Enemy {
-    fn new(id: u32, x: i32, y: i32, kind: DamageKind, speed: f32) -> Self {
+    fn new(id: u32, x: i32, y: i32, health: i32, kind: DamageKind, speed: f32) -> Self {
         Self {
             id,
             kind,
+            health,
             loc: (x as f32, y as f32),
             rect: Rect::new(x, y, 10, 10),
             speed,
@@ -63,10 +65,10 @@ impl<'a> EnemyQueue<'a> {
         }
     }
 
-    pub fn add_enemy(&mut self, x: i32, y: i32, kind: DamageKind, speed: f32) {
+    pub fn add_enemy(&mut self, x: i32, y: i32, health: i32, kind: DamageKind, speed: f32) {
         self.next_id += 1;
         self.enemies
-            .push(Enemy::new(self.next_id, x, y, kind, speed));
+            .push(Enemy::new(self.next_id, x, y, health, kind, speed));
     }
 
     pub fn move_towards_player(&mut self, player_rect: Rect, delta: u64) {
@@ -114,6 +116,15 @@ impl<'a> EnemyQueue<'a> {
 
     pub fn kill(&mut self, id: &u32) {
         self.enemies.retain(|e| e.id != *id);
+    }
+
+    pub fn damage_enemy(&mut self, id: u32, kind: DamageKind) {
+        let e = self.enemies.iter_mut().find(|enemy| enemy.id == id);
+        if let Some(enemy) = e {
+            damage_health(&mut enemy.health, kind);
+        } else {
+            println!("damage_health: Enemy ID {} not found", id);
+        }
     }
 
     pub fn render(&self, canvas: &mut WindowCanvas) {
